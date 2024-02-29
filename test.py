@@ -3,23 +3,22 @@ from selenium import webdriver
 import pandas as pd
 import time
 
-# Configure the Selenium web driver
-options = webdriver.FirefoxOptions()
-options.add_argument('--headless')  # Run Chrome in headless mode (no GUI)
-driver = webdriver.Firefox(options=options)
+# options = webdriver.FirefoxOptions()
+options = webdriver.ChromeOptions()
+# options.add_argument('--headless')  # no GUI
+driver = webdriver.Chrome(options=options)
+# driver = webdriver.Firefox(options=options)
 
-# Define the URL to scrape
+
 url = 'https://etherscan.io/txs'
 
-# Open the URL in the web driver
 driver.get(url)
 
-# Wait for the page to load
 time.sleep(0.5)
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 table = soup.find('tbody')
-rows = table.find_all('tr', limit=11)[1:]  # Exclude the header row
+rows = table.find_all('tr', limit=11)[1:]  
 
 hash_list = []
 block_list = []
