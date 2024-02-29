@@ -7,7 +7,7 @@ fake = Faker()
 data = []
 for _ in range(1000):
     hash_value = fake.sha256()
-    block = fake.random_int(min=10000000, max=20000000)
+    block = fake.random_int(min=150000000, max=150000010)
     age = fake.date_time_this_decade()
     sender = fake.hexify(text='^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     receiver = fake.hexify(text='^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
