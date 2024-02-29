@@ -27,27 +27,30 @@ to_list = []
 value_list = []
 txn_fee_list = []
 
+def extract_wallet_address(column):
+    pattern = r"\((0x[0-9a-fA-F]+)\)"
+    match = re.search(pattern, str(column))
+
+    if match:
+        wallet_address = match.group(1)
+    else:
+        pattern2 = r"data-clipboard-text=\"0x[0-9a-fA-F]+"
+        match = re.search(pattern2, str(column))
+
+        if match:
+            wallet_address = match.group().replace('data-clipboard-text=\"', '')
+        else:
+            wallet_address = None
+            
+    return wallet_address
+
 for row in rows[:10]:
     columns = row.find_all('td')
     hash_list.append(columns[1].text.strip())
     block_list.append(columns[3].text.strip())
     age_list.append(columns[5].text.strip())
-    from_list.append(columns[7].text.strip())
-    
-    ## Extracting To Wallet Address : 
-    pattern = r"\((0x[0-9a-fA-F]+)\)"
-    match = re.search(pattern, str(columns[9]))
-    if match:
-         wallet_address = match.group(1)
-         to_list.append(wallet_address)
-    else:
-        pattern2 = r"data-clipboard-text=\"0x[0-9a-fA-F]+"
-        match = re.search(pattern2,  str(columns[9]))
-
-        if match:
-            wallet_address = match.group().replace('data-clipboard-text=\"', '')
-        to_list.append(wallet_address)
-        
+    from_list.append(extract_wallet_address(columns[7]))
+    to_list.append(extract_wallet_address(columns[9]))
     value_list.append(columns[10].text.strip())
     txn_fee_list.append(columns[11].text.strip())
 
