@@ -6,9 +6,9 @@ import seaborn as sns
 import math
 import random
 
-SAMPLE_PERCENTAGE = 10
+SAMPLE_PERCENTAGE = 20
 
-df = pd.read_csv('random_dataset.csv')
+df = pd.read_csv('output.csv')
 sample_size = len(df) // SAMPLE_PERCENTAGE
 df = df.sample(n = sample_size, random_state=random.randint(1, 10000000))
 
