@@ -4,28 +4,8 @@ import pandas as pd
 import time
 import re
 
-# options = webdriver.FirefoxOptions()
-options = webdriver.ChromeOptions()
-# options.add_argument('--headless')  # no GUI
-driver = webdriver.Chrome(options=options)
-# driver = webdriver.Firefox(options=options)
-
-
-url = 'https://etherscan.io/txs'
-
-driver.get(url)
-
-soup = BeautifulSoup(driver.page_source, 'html.parser')
-table = soup.find('tbody')
-rows = table.find_all('tr', limit=11)[1:]  
-
-hash_list = []
-block_list = []
-age_list = []
-from_list = []
-to_list = []
-value_list = []
-txn_fee_list = []
+BLOCK = 10
+PAGE_LOAD = 100
 
 def extract_wallet_address(column):
     pattern = r"\((0x[0-9a-fA-F]+)\)"
@@ -44,15 +24,54 @@ def extract_wallet_address(column):
             
     return wallet_address
 
-for row in rows[:10]:
-    columns = row.find_all('td')
-    hash_list.append(columns[1].text.strip())
-    block_list.append(columns[3].text.strip())
-    age_list.append(columns[5].text.strip())
-    from_list.append(extract_wallet_address(columns[7]))
-    to_list.append(extract_wallet_address(columns[9]))
-    value_list.append(columns[10].text.strip())
-    txn_fee_list.append(columns[11].text.strip())
+options = webdriver.FirefoxOptions()
+#options = webdriver.ChromeOptions()
+# options.add_argument('--headless')  # no GUI#
+#driver = webdriver.Chrome(options=options)
+driver = webdriver.Firefox(options=options)
+
+
+block_counter = 0
+page_counter = 1
+prev = []
+
+hash_list = []
+block_list = []
+age_list = []
+from_list = []
+to_list = []
+value_list = []
+txn_fee_list = []
+    
+while(block_counter != BLOCK + 1):
+    url = 'https://etherscan.io/txs?ps=' + str(PAGE_LOAD) +'&p=' + str(page_counter)
+    driver.get(url)
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    table = soup.find('tbody')
+    rows = table.find_all('tr')[1:]  
+
+    
+    
+    for row in rows[:100]:
+        columns = row.find_all('td')    
+        current_block = columns[3].text.strip()
+        
+        if(current_block not in prev):
+            prev.append(current_block)
+            block_counter += 1
+        
+        if(block_counter > BLOCK + 1):
+            break;
+        
+        hash_list.append(columns[1].text.strip())
+        block_list.append(current_block)
+        age_list.append(columns[5].text.strip())
+        from_list.append(extract_wallet_address(columns[7]))
+        to_list.append(extract_wallet_address(columns[9]))
+        value_list.append(columns[10].text.strip())
+        txn_fee_list.append(columns[11].text.strip())
+        
+    page_counter += 1
 
 df = pd.DataFrame({
     'Hash': hash_list,
