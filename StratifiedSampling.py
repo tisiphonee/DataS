@@ -12,12 +12,12 @@ def sample_from_each_group(group):
     return group.sample(frac=0.1, random_state = random.randint(1, 1000000))
 
 df = pd.read_csv('random_dataset.csv')
-sampled_df = df.groupby('Block').apply(sample_from_each_group)
+df = df.groupby('Block').apply(sample_from_each_group)
 
 
 # Reset the index if needed
-sampled_df = sampled_df.reset_index(drop=True)
-sampled_df.to_csv("SSoutput.csv")
+df = df.reset_index(drop=True)
+df.to_csv("SSoutput.csv")
 
 ## Data Cleaning : 
 df['Value'] = df['Value'].str.rstrip(' ETH').astype(float)
