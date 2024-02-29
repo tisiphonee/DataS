@@ -9,9 +9,9 @@ import random
 # Assuming df is your DataFrame and "block" is your column of interest.
 # Adjust the frac parameter as needed. In this case, 0.1 will give 10%.
 def sample_from_each_group(group):
-    return group.sample(frac=0.1, random_state = random.randint(1, 1000000))
+    return group.sample(frac=0.05, random_state = random.randint(1, 1000000))
 
-df = pd.read_csv('random_dataset.csv')
+df = pd.read_csv('output.csv')
 df = df.groupby('Block').apply(sample_from_each_group)
 
 
