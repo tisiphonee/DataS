@@ -24,4 +24,3 @@ with open(csv_file_path, mode='w', newline='') as file:
     writer.writerow(header)
     writer.writerows(data)
 
-print(f"Random dataset with 100 samples created and saved as {csv_file_path}")
