@@ -4,8 +4,8 @@ import pandas as pd
 import time
 import re
 
-BLOCK = 10
-PAGE_LOAD = 100
+BLOCK = 10 
+PAGE_LOAD = 100 #This could be 100, 50 or 10
 
 def extract_wallet_address(column):
     pattern = r"\((0x[0-9a-fA-F]+)\)"
@@ -30,7 +30,6 @@ options = webdriver.FirefoxOptions()
 #driver = webdriver.Chrome(options=options)
 driver = webdriver.Firefox(options=options)
 
-
 block_counter = 0
 page_counter = 1
 prev = []
@@ -49,10 +48,8 @@ while(block_counter != BLOCK + 1):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     table = soup.find('tbody')
     rows = table.find_all('tr')[1:]  
-
-    
-    
-    for row in rows[:100]:
+   
+    for row in rows[:PAGE_LOAD]:
         columns = row.find_all('td')    
         current_block = columns[3].text.strip()
         
@@ -82,7 +79,6 @@ df = pd.DataFrame({
     'Value': value_list,
     'Txn Fee': txn_fee_list
 })
-
 
 driver.quit()
 df.to_csv('output.csv', index=False)
