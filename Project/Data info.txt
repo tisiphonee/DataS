@@ -1,0 +1,16 @@
+We will utilize IMDb as our primary source for data collection, employing web crawling after following approval of this section.
+
+Dataset Name: IMDb
+
+Target Variables: Title, Release Date, Duration, Genre, Rating, Votes, Language, Country of Origin, Budget, Production Company
+
+Dataset Link: https://www.imdb.com/search/title/
+
+Here's a sample data:
+
+| Title                   | Release Date | Duration | Genre  | Rating | Votes | Language | Country of Origin | Budget      | Production Company   |
+|-------------------------|--------------|----------|--------|--------|-------|----------|-------------------|-------------|----------------------|
+| Dilon Mein Uphaan       | 2023         | 1h 48m   | News   | 10     | 201   | Hindi    | India             | ₹25,000,000 | Metafaabex Industries|
+| La Protegida La Película| 2024         | 1h 7m    | Action | 10     | 10    | Spanish  | Spain             | €1000       | Bis Productions     |
+
+(Note: The data sample provided above was manually collected prior to approval. Subsequently, automated web crawling were employed to gather additional data.)
